@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String
+  registration String // matricula
+  password     String
+  dateOfBirth  DateTime @map("date_of_birth") // data de anivversario 
+  cpf          String   @unique @db.VarChar(11)
+  email        String   @unique
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  USER
+}
+
+model Tutors {
+  id          String  @id @default(uuid())
+  username    String
+  socialName  String? // nome social
+  cpf         String  @unique @db.VarChar(11)
+  cnpj        String  @unique @db.VarChar(14)
+  email       String? @unique
+  dateOfBirth String? @map("date_of_birth") // data de aniversairo
+  phoneNumber String  @map("phone_number") // numero de telefone
+  gender      String? // genero
+  uniqueCard  String? @map("unique_card") // CARTAO REFERENTE AO BOLSA FAMILIA
+  about       String?
+
+  // address
+  cep          String? @db.VarChar(8)
+  street       String?
+  numberHouse  String? @map("number_house")
+  complement   String? // complemento EX: bloco 25
+  neighborhood String? // bairro
+  city         String?
+
+  // additional information
+  nameEmergencyContact String? // nome para contato de emergencia
+  phoneNumberEmergency String? // telefone de emergencia
+
+  //pets
+  pets Pet[]
+
+  // docments
+  // TypeOfDocuments VER OQ FAZER !!!!  
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Pet {
+  id           String  @id @default(uuid())
+  rga          String  @db.VarChar(15)
+  name         String
+  dateOfBirth  String? // data de aniversairo 
+  age          String
+  about        String
+  castrated    String? // castrado
+  sex          String // sexo do pet
+  type         String // especie do pet 
+  breed        String // raça
+  weight       String?
+  weightClass  String  @map("weight_class") @db.VarChar(20) // Ex: "0-5kg", "6-15kg", "16-30kg"
+  primaryColor String? @map("primary_color") // cor do pet
+
+  // identification
+  dateOfApplication       String? @map("date_of_application")
+  microchip               String? @db.VarChar(15)
+  veterinarian            String?
+  manufacturerOfMicrochip String?
+
+  // addtional data
+  socialName      String?  @map("social_name") // nome Social
+  origin          String? // procedencia
+  latitude        Decimal?
+  longitude       Decimal?
+  housing         String? // moradia
+  characteristics String? // carcteristicas do pet
+
+  //Docments A SER PENSADO!!!!
+
+  orgId String @map("org_id")
+  event Event  @relation(fields: [orgId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Tutors    Tutors?  @relation(fields: [tutorsId], references: [id])
+  tutorsId  String?
+
+  @@map("pets")
+}
+
+model Event {
+  //event information
+  id           String       @id @default(uuid())
+  name         String
+  description  String
+  statsOfEvent StatsOfEvent @map("stats_of_event")
+  latitude     Decimal?
+  longitude    Decimal?
+  cep          String       @db.VarChar(8)
+  street       String
+  neighborhood String // bairro
+  numberHouse  String?      @map("number_house")
+  authorName   String       @map("author_name")
+  email        String       @unique
+  whatsapp     String
+
+  //Filters
+  acceptedAnimalTypes String[]
+  acceptedSexes       String[]
+  excludedBreeds      String[]
+
+  //date
+  dateOfEvent    DateTime @map("date_of_event")
+  starTime       DateTime @map("start_time")
+  endTime        DateTime @map("end_time")
+  totalVacancies Int      @map("total_vacancies") // total de vagas
+  registered     String
+
+  pets      Pet[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("events")
+}
+
+enum StatsOfEvent {
+  PENDING
+  ACTIVE
+  FINISHED
+  CANCELLED
+}
