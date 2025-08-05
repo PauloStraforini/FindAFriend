@@ -10,11 +10,12 @@ datasource db {
 model User {
   id           String   @id @default(uuid())
   username     String
-  registration String // matricula
+  registration String // matrícula
   password     String
-  dateOfBirth  DateTime @map("date_of_birth") // data de anivversario 
+  dateOfBirth  DateTime @map("date_of_birth") // data de aniversario
   cpf          String   @unique @db.VarChar(11)
   email        String   @unique
+  position     Position
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -22,118 +23,123 @@ model User {
   @@map("user")
 }
 
-enum Role {
+enum Position {
   ADMIN
   MANAGER
   USER
 }
 
 model Tutors {
+  // Informações gerais
   id          String  @id @default(uuid())
-  username    String
-  socialName  String? // nome social
-  cpf         String  @unique @db.VarChar(11)
+  cpf         String? @unique @db.VarChar(11)
   cnpj        String  @unique @db.VarChar(14)
+  username    String
+  socialName  String? @map("social_name") // nome social
   email       String? @unique
-  dateOfBirth String? @map("date_of_birth") // data de aniversairo
-  phoneNumber String  @map("phone_number") // numero de telefone
-  gender      String? // genero
-  uniqueCard  String? @map("unique_card") // CARTAO REFERENTE AO BOLSA FAMILIA
+  dateOfBirth String? @map("date_of_birth")
+  phoneNumber String  @map("phone_number") // Numero de telefone
+  gender      Gender // Genero 
+  uniqueCard  String? @map("unique_card") // cartão referente ao Bolsa Família
   about       String?
 
-  // address
+  // Endereço
   cep          String? @db.VarChar(8)
-  street       String?
-  numberHouse  String? @map("number_house")
-  complement   String? // complemento EX: bloco 25
-  neighborhood String? // bairro
+  street       String? // Rua
+  numberHouse  String? @map("number_house") // Numero da casa
+  complement   String? // Complemento (ex: 'Bloco 25')
+  neighborhood String? // Vizinhança
   city         String?
 
-  // additional information
-  nameEmergencyContact String? // nome para contato de emergencia
-  phoneNumberEmergency String? // telefone de emergencia
+  // Contato de emergência
+  nameEmergencyContact String? @map("name_emergency_contact")
+  phoneNumberEmergency String? @map("phone_number_emergency")
 
-  //pets
+  // Relacionamento
   pets Pet[]
-
-  // docments
-  // TypeOfDocuments VER OQ FAZER !!!!  
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
+enum Gender {
+  male
+  female
+  other
+}
+
 model Pet {
-  id           String  @id @default(uuid())
-  rga          String  @db.VarChar(15)
+  // Informações Gerais
+  id           String   @id @default(uuid())
+  rga          String   @db.VarChar(15)
   name         String
-  dateOfBirth  String? // data de aniversairo 
-  age          String
+  dateOfBirth  String?  @map("date_of_birth") // Data de nascimento
+  age          String?
+  castrated    Boolean? // Castrado?
+  sex          String // Sexo do pet
+  type         String // Espécie (ex: cachorro, gato)
+  breed        String // Raça
+  weight       Decimal? // Peso
+  weightClass  String?  @map("weight_class") @db.VarChar(20) // Ex: "0-5kg", "6-15kg"
+  primaryColor String?  @map("primary_color") // Cor predominante
   about        String
-  castrated    String? // castrado
-  sex          String // sexo do pet
-  type         String // especie do pet 
-  breed        String // raça
-  weight       String?
-  weightClass  String  @map("weight_class") @db.VarChar(20) // Ex: "0-5kg", "6-15kg", "16-30kg"
-  primaryColor String? @map("primary_color") // cor do pet
 
-  // identification
-  dateOfApplication       String? @map("date_of_application")
+  // Identificação
   microchip               String? @db.VarChar(15)
+  dateOfApplication       String? @map("date_of_application")
   veterinarian            String?
-  manufacturerOfMicrochip String?
+  manufacturerOfMicrochip String? @map("manufacturer_of_microchip") // Fabricante de microchip
 
-  // addtional data
-  socialName      String?  @map("social_name") // nome Social
-  origin          String? // procedencia
-  latitude        Decimal?
-  longitude       Decimal?
-  housing         String? // moradia
-  characteristics String? // carcteristicas do pet
+  // Informações adicionais
+  socialName      String? @map("social_name") // Nome social
+  origin          String? // Procedência
+  housing         String? // Tipo de moradia
+  characteristics String? // Características do pet
 
-  //Docments A SER PENSADO!!!!
+  // Relacionamentos
+  event    Event   @relation(fields: [orgId], references: [id])
+  orgId    String  @map("org_id")
+  Tutors   Tutors? @relation(fields: [tutorsId], references: [id])
+  tutorsId String? @map("tutors_id")
 
-  orgId String @map("org_id")
-  event Event  @relation(fields: [orgId], references: [id])
-
+  // Datas
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  Tutors    Tutors?  @relation(fields: [tutorsId], references: [id])
-  tutorsId  String?
 
   @@map("pets")
 }
 
 model Event {
-  //event information
+  // Informações gerais do evento
   id           String       @id @default(uuid())
   name         String
   description  String
-  statsOfEvent StatsOfEvent @map("stats_of_event")
+  statsOfEvent StatsOfEvent @map("stats_of_event") // Status do evento
   latitude     Decimal?
   longitude    Decimal?
   cep          String       @db.VarChar(8)
-  street       String
-  neighborhood String // bairro
+  street       String // Rua
+  neighborhood String // Bairro
   numberHouse  String?      @map("number_house")
+  complement   String? // Complemento (ex: 'Bloco 25')
   authorName   String       @map("author_name")
   email        String       @unique
   whatsapp     String
 
   //Filters
-  acceptedAnimalTypes String[]
-  acceptedSexes       String[]
-  excludedBreeds      String[]
+  acceptedAnimalTypes String[] @map("accepted_animal_types") // Tipos de animais aceitos
+  acceptedSexes       String[] @map("accepted_sexes") // Tipos de sexo de pet aceitos
+  excludedBreeds      String[] @map("exclude_breeds")
 
-  //date
+  //datas
   dateOfEvent    DateTime @map("date_of_event")
   starTime       DateTime @map("start_time")
   endTime        DateTime @map("end_time")
   totalVacancies Int      @map("total_vacancies") // total de vagas
-  registered     String
+  registered     String // Incritos
 
-  pets      Pet[]
+  pets Pet[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
