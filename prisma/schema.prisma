@@ -10,7 +10,7 @@ datasource db {
 model User {
   id            String   @id @default(uuid())
   username      String
-  registration  String // matrícula
+  registration  String   @unique // matrícula
   password_hash String
   dateOfBirth   DateTime @map("date_of_birth") // data de aniversario
   cpf           String   @unique @db.VarChar(11)
@@ -32,8 +32,8 @@ enum Position {
 model Tutors {
   // Informações gerais
   id          String  @id @default(uuid())
-  cpf         String? @unique @db.VarChar(11)
-  cnpj        String  @unique @db.VarChar(14)
+  cpf         String  @unique @db.VarChar(11)
+  cnpj        String? @unique @db.VarChar(14)
   username    String
   socialName  String? @map("social_name") // nome social
   email       String? @unique
