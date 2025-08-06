@@ -63,9 +63,9 @@ model Tutors {
 }
 
 enum Gender {
-  male
-  female
-  other
+  MALE
+  FEMALE
+  OTHER
 }
 
 model Pet {
