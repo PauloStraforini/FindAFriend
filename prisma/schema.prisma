@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  username     String
-  registration String // matrícula
-  password     String
-  dateOfBirth  DateTime @map("date_of_birth") // data de aniversario
-  cpf          String   @unique @db.VarChar(11)
-  email        String   @unique
-  position     Position
+  id            String   @id @default(uuid())
+  username      String
+  registration  String // matrícula
+  password_hash String
+  dateOfBirth   DateTime @map("date_of_birth") // data de aniversario
+  cpf           String   @unique @db.VarChar(11)
+  email         String   @unique
+  position      Position
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
