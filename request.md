@@ -19,3 +19,18 @@ FindAFriend API
 - [ ] O usuário que quer adotar, entrará em contato com a ORG via WhatsApp
 - [ ] Todos os filtros, além da cidade, são opcionais
 - [ ] Para uma ORG acessar a aplicação como admin, ela precisa estar logada
+
+## Padrão de Commits
+
+| Tipo       | Para quê serve                                                                   |
+| ---------- | -------------------------------------------------------------------------------- |
+| `feat`     | Adição de nova funcionalidade                                                    |
+| `fix`      | Correção de bug                                                                  |
+| `chore`    | Tarefas de manutenção, sem impacto direto no código de produção                  |
+| `docs`     | Alterações na documentação                                                       |
+| `style`    | Alterações de formatação, sem mudança de lógica (ex: ponto e vírgula, identação) |
+| `refactor` | Refatoração de código (melhoria interna sem alterar comportamento externo)       |
+| `test`     | Adição ou modificação de testes                                                  |
+| `perf`     | Melhorias de performance                                                         |
+| `ci`       | Alterações na configuração de integração contínua                                |
+| `build`    | Mudanças que afetam o build (webpack, vite, deps, etc.)                          |
