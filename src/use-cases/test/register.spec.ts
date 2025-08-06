@@ -37,7 +37,7 @@ describe('Register User Case', () => {
       position: 'ADMIN',
     })
 
-    expect(() =>
+    await expect(() =>
       registerUseCase.execute({
         username: 'Paulo Straforini',
         email,
