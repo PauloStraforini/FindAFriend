@@ -49,4 +49,62 @@ describe('Register User Case', () => {
       }),
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
+
+  it('should not ne able to register with same cpf twice', async () => {
+    const usersRepository = new InMemoryUsersRepository()
+    const registerUseCase = new RegisterUseCase(usersRepository)
+
+    const cpf = '12345678910'
+
+    await registerUseCase.execute({
+      username: 'Paulo Straforini',
+      email: 'paula@example.com',
+      cpf,
+      registration: 'ABC113',
+      password: 'securePass123',
+      dateOfBirth: new Date('1990-01-01'),
+      position: 'ADMIN',
+    })
+
+    await expect(() =>
+      registerUseCase.execute({
+        username: 'Paulo Straforini',
+        email: 'paula@example.com',
+        cpf,
+        registration: 'ABC113',
+        password: 'securePass123',
+        dateOfBirth: new Date('1990-01-01'),
+        position: 'ADMIN',
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
+  it('should not ne able to register with same registration twice', async () => {
+    const usersRepository = new InMemoryUsersRepository()
+    const registerUseCase = new RegisterUseCase(usersRepository)
+
+    const registration = 'paulo@example.com'
+
+    await registerUseCase.execute({
+      username: 'Paulo Straforini',
+      email: 'paula@example.com',
+      cpf: '12345678910',
+      registration,
+      password: 'securePass123',
+      dateOfBirth: new Date('1990-01-01'),
+      position: 'ADMIN',
+    })
+
+    await expect(() =>
+      registerUseCase.execute({
+        username: 'Paulo Straforini',
+        email: 'paula@example.com',
+        cpf: '12345678910',
+        registration,
+        password: 'securePass123',
+        dateOfBirth: new Date('1990-01-01'),
+        position: 'ADMIN',
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
 })

@@ -4,7 +4,10 @@ import { RegisterUseCase } from '../../use-cases/test/register'
 import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
 import { UserAlreadyExistsError } from '../../use-cases/errors/user-already-exist-errors'
 
-export async function register(request: FastifyRequest, reply: FastifyReply) {
+export async function registerUser(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
   const registerBodySchema = z.object({
     username: z.string(),
     registration: z.string(),
