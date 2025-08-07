@@ -5,7 +5,7 @@
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build",
+    "build": "tsup src/server.ts --out-dir build --format cjs",
     "lint": "eslint ./**/*.ts* --fix",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/node": "24.2.0",
     "prisma": "6.3.0",
+    "ts-node-dev": "2.0.0",
     "tsup": "8.5.0",
     "tsx": "4.20.3",
     "typescript": "5.9.2",
