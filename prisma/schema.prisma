@@ -31,16 +31,16 @@ enum Position {
 
 model Tutors {
   // Informações gerais
-  id          String  @id @default(uuid())
-  cpf         String  @unique @db.VarChar(11)
-  cnpj        String? @unique @db.VarChar(14)
+  id          String    @id @default(uuid())
+  cpf         String    @unique @db.VarChar(11)
+  cnpj        String?   @unique @db.VarChar(14)
   username    String
-  socialName  String? @map("social_name") // nome social
-  email       String? @unique
-  dateOfBirth String? @map("date_of_birth")
-  phoneNumber String  @map("phone_number") // Numero de telefone
+  socialName  String?   @map("social_name") // nome social
+  email       String?   @unique
+  dateOfBirth DateTime? @map("date_of_birth")
+  phoneNumber String    @map("phone_number") // Numero de telefone
   gender      Gender // Genero 
-  uniqueCard  String? @map("unique_card") // cartão referente ao Bolsa Família
+  uniqueCard  String?   @map("unique_card") // cartão referente ao Bolsa Família
   about       String?
 
   // Endereço
@@ -70,25 +70,25 @@ enum Gender {
 
 model Pet {
   // Informações Gerais
-  id           String   @id @default(uuid())
-  rga          String   @db.VarChar(15)
+  id           String    @id @default(uuid())
+  rga          String    @unique @db.VarChar(15)
   name         String
-  dateOfBirth  String?  @map("date_of_birth") // Data de nascimento
+  dateOfBirth  DateTime? @map("date_of_birth") // Data de nascimento
   age          String?
   castrated    Boolean? // Castrado?
-  sex          String // Sexo do pet
-  type         String // Espécie (ex: cachorro, gato)
+  sex          SEX // sexo do pet
+  type         TYPE // Espécie (ex: cachorro, gato)
   breed        String // Raça
   weight       Decimal? // Peso
-  weightClass  String?  @map("weight_class") @db.VarChar(20) // Ex: "0-5kg", "6-15kg"
-  primaryColor String?  @map("primary_color") // Cor predominante
+  weightClass  String?   @map("weight_class") @db.VarChar(20) // Ex: "0-5kg", "6-15kg"
+  primaryColor String?   @map("primary_color") // Cor predominante
   about        String
 
   // Identificação
-  microchip               String? @db.VarChar(15)
-  dateOfApplication       String? @map("date_of_application")
+  microchip               String?   @unique @db.VarChar(15)
+  dateOfApplication       DateTime? @map("date_of_application")
   veterinarian            String?
-  manufacturerOfMicrochip String? @map("manufacturer_of_microchip") // Fabricante de microchip
+  manufacturerOfMicrochip String?   @map("manufacturer_of_microchip") // Fabricante de microchip
 
   // Informações adicionais
   socialName      String? @map("social_name") // Nome social
@@ -107,6 +107,17 @@ model Pet {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("pets")
+}
+
+enum SEX {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum TYPE {
+  CAT
+  DOG
 }
 
 model Event {
