@@ -1,6 +1,6 @@
 import { PetAlreadyExistsError } from '../errors/pet-already-exist-error'
 import { PetsRepository } from '../../repositories/pets-repository'
-import { Pet, Prisma, TYPE, SEX } from '@prisma/client'
+import { Pet, TYPE, SEX } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime/library'
 
 interface CreatePetUseCaseRequest {
@@ -34,69 +34,41 @@ interface CreatePetUseCaseResponse {
 export class CreatePetUseCase {
   constructor(private petsRepository: PetsRepository) {}
 
-  async execute({
-    about,
-    age,
-    breed,
-    characteristics,
-    dateOfApplication,
-    dateOfBirth,
-    housing,
-    manufacturerOfMicrochip,
-    microchip,
-    name,
-    orgId,
-    origin,
-    primaryColor,
-    rga,
-    sex,
-    socialName,
-    type,
-    veterinarian,
-    weight,
-    weightClass,
-    tutorsId,
-  }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
+  async execute(
+    data: CreatePetUseCaseRequest,
+  ): Promise<CreatePetUseCaseResponse> {
     const existingPet = await this.petsRepository.findByRgaOrMicrochip(
-      microchip,
-      rga,
+      data.rga,
+      data.microchip,
     )
 
     if (existingPet) {
       throw new PetAlreadyExistsError()
     }
 
-    const petData: Prisma.PetCreateInput = {
-      about,
-      age,
-      breed,
-      characteristics,
-      dateOfApplication,
-      dateOfBirth,
-      housing,
-      manufacturerOfMicrochip,
-      microchip,
-      name,
-      origin,
-      primaryColor,
-      rga,
-      sex,
-      socialName,
-      type,
-      veterinarian,
-      weight,
-      weightClass,
-      event: {
-        connect: { id: orgId },
-      },
-      Tutors: tutorsId
-        ? {
-            connect: { id: tutorsId },
-          }
-        : undefined,
-    }
-
-    const pet = await this.petsRepository.create(petData)
+    const pet = await this.petsRepository.create({
+      name: data.name,
+      rga: data.rga,
+      dateOfBirth: data.dateOfBirth,
+      age: data.age,
+      sex: data.sex,
+      type: data.type,
+      breed: data.breed,
+      weight: data.weight,
+      weightClass: data.weightClass,
+      primaryColor: data.primaryColor,
+      about: data.about,
+      microchip: data.microchip,
+      dateOfApplication: data.dateOfApplication,
+      veterinarian: data.veterinarian,
+      manufacturerOfMicrochip: data.manufacturerOfMicrochip,
+      socialName: data.socialName,
+      origin: data.origin,
+      housing: data.housing,
+      characteristics: data.characteristics,
+      orgId: data.orgId,
+      tutorsId: data.tutorsId,
+    })
 
     return {
       pet,

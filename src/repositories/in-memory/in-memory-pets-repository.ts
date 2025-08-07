@@ -1,8 +1,8 @@
-import { Prisma, Pet } from '@prisma/client'
+import { Pet, Prisma } from '@prisma/client'
 import { PetsRepository } from '../pets-repository'
 import { randomUUID } from 'crypto'
 
-export class InMemoryUsersRepository implements PetsRepository {
+export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   async findByRgaOrMicrochip(
@@ -20,31 +20,33 @@ export class InMemoryUsersRepository implements PetsRepository {
     return pet
   }
 
-  async create(data: Prisma.PetCreateInput): Promise<Pet> {
+  async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
     const pet: Pet = {
-      id: randomUUID(),
-      name: data.name,
-      about: data.about,
-      age: data.age,
-      breed: data.breed,
-      castrated: data.castrated,
-      characteristics: data.characteristics,
-      dateOfApplication: data.dateOfApplication,
-      housing: data.housing,
-      manufacturerOfMicrochip: data.manufacturerOfMicrochip,
-      microchip: data.microchip,
-      orgId: data.orgId,
-      origin: data.origin,
-      primaryColor: data.primaryColor,
+      id: data.id ?? randomUUID(),
       rga: data.rga,
-      sex: data.sex as 'MALE' | 'FAMALE' | 'OTHER',
-      socialName: data.socialName,
-      tutorsId: data.Tutors,
-      type: data.type as 'DOG' | 'CAT',
-      veterinarian: data.veterinarian,
-      weight: data.weight,
-      weightClass: data.weightClass,
-      dateOfBirth: new Date(data.dateOfBirth),
+      name: data.name,
+      dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
+      age: data.age ?? null,
+      castrated: data.castrated ?? null,
+      sex: data.sex as 'MALE' | 'FEMALE' | 'OTHER',
+      type: data.type as 'CAT' | 'DOG',
+      breed: data.breed,
+      weight: data.weight ? new Prisma.Decimal(data.weight.toString()) : null,
+      weightClass: data.weightClass ?? null,
+      primaryColor: data.primaryColor ?? null,
+      about: data.about,
+      microchip: data.microchip ?? null,
+      dateOfApplication: data.dateOfApplication
+        ? new Date(data.dateOfApplication)
+        : null,
+      veterinarian: data.veterinarian ?? null,
+      manufacturerOfMicrochip: data.manufacturerOfMicrochip ?? null,
+      socialName: data.socialName ?? null,
+      origin: data.origin ?? null,
+      housing: data.housing ?? null,
+      characteristics: data.characteristics ?? null,
+      orgId: data.orgId,
+      tutorsId: data.tutorsId ?? null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
