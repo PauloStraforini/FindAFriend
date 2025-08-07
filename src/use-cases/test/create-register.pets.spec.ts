@@ -43,7 +43,6 @@ describe('Register Pet Use Case', () => {
 
     const rga = 'RGA123456789'
 
-    // Primeiro cadastro
     await createPetUseCase.execute({
       name: 'Fido',
       rga,
@@ -56,7 +55,7 @@ describe('Register Pet Use Case', () => {
       weightClass: '15-30kg',
       primaryColor: 'Amarelo',
       about: 'Cachorro amigável e brincalhão',
-      microchip: 'MICROCHIP123', // Microchip único para o primeiro pet
+      microchip: 'MICROCHIP123',
       dateOfApplication: new Date('2018-06-20'),
       veterinarian: 'Dr. João Silva',
       manufacturerOfMicrochip: 'VetChip',
@@ -67,11 +66,10 @@ describe('Register Pet Use Case', () => {
       orgId: '12345678',
     })
 
-    // Tentativa de segundo cadastro com o mesmo RGA
     await expect(() =>
       createPetUseCase.execute({
         name: 'Rex',
-        rga, // Mesmo RGA do primeiro pet
+        rga,
         dateOfBirth: new Date('2019-03-10'),
         age: '4',
         sex: 'MALE',
@@ -81,7 +79,7 @@ describe('Register Pet Use Case', () => {
         weightClass: '25-35kg',
         primaryColor: 'Preto',
         about: 'Cachorro protetor',
-        microchip: 'MICROCHIP456', // ✨ Microchip DIFERENTE para isolar o teste
+        microchip: 'MICROCHIP456',
         dateOfApplication: new Date('2019-03-15'),
         veterinarian: 'Dra. Maria',
         manufacturerOfMicrochip: 'VetChip',
