@@ -1,6 +1,6 @@
 import { InMemoryTutorsRepository } from '../../repositories/in-memory/in-memory-tutors-repository'
 import { TutorsAlreadyExistsError } from '../errors/tutors-already-exist-error'
-import { CreateTutorUseCase } from './create-register.tutors'
+import { CreateTutorUseCase } from './create-register-tutors'
 import { expect, describe, it, beforeEach } from 'vitest'
 
 let tutorsRepository: InMemoryTutorsRepository
