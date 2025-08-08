@@ -25,6 +25,15 @@ interface CreatePetUseCaseRequest {
   characteristics: string
   orgId: string
   tutorsId?: string
+  castrated: boolean
+  nameEmergencyContact: string
+  phoneNumberEmergency: string
+  cep: string
+  street: string
+  numberHouse: string
+  complement?: string
+  neighborhood: string
+  city: string
 }
 
 interface CreatePetUseCaseResponse {
