@@ -3,7 +3,9 @@ import { UsersRepository } from '../../repositories/users-repository'
 import { InvalidCredentialsError } from '../errors/invalid-credentials-error'
 import { User } from '@prisma/client'
 
-interface AuthenticateUseCaseResquest {
+interface AuthenticateUseCaseRequest {
+  email: string
+  cpf: string
   registration: string
   password: string
 }
@@ -16,12 +18,14 @@ export class AuthenticateUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({
+    email,
+    cpf,
     registration,
     password,
-  }: AuthenticateUseCaseResquest): Promise<AuthenticateUseCaseResponse> {
+  }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     const user = await this.usersRepository.findByEmailCpfOrRegistration(
-      registration,
-      password,
+      email,
+      cpf,
       registration,
     )
 
@@ -29,9 +33,9 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError()
     }
 
-    const doesPassowordMatches = await compare(password, user.password)
+    const doesPasswordMatch = await compare(password, user.password_hash)
 
-    if (!doesPassowordMatches) {
+    if (!doesPasswordMatch) {
       throw new InvalidCredentialsError()
     }
 

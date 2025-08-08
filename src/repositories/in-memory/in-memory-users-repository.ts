@@ -12,16 +12,12 @@ export class InMemoryUsersRepository implements UsersRepository {
   ): Promise<User | null> {
     const user = this.items.find(
       (item) =>
-        item.email === email ||
-        item.cpf === cpf ||
+        item.email === email &&
+        item.cpf === cpf &&
         item.registration === registration,
     )
 
-    if (!user) {
-      return null
-    }
-
-    return user
+    return user || null
   }
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
