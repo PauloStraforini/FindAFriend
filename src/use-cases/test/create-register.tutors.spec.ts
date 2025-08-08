@@ -1,14 +1,19 @@
 import { InMemoryTutorsRepository } from '../../repositories/in-memory/in-memory-tutors-repository'
 import { TutorsAlreadyExistsError } from '../errors/tutors-already-exist-error'
 import { CreateTutorUseCase } from './create-register.tutors'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 
-describe('Register Pet Use Case', () => {
-  it('should be able to register a pet', async () => {
-    const tutorsRepository = new InMemoryTutorsRepository()
-    const createTutorUseCase = new CreateTutorUseCase(tutorsRepository)
+let tutorsRepository: InMemoryTutorsRepository
+let sut: CreateTutorUseCase
 
-    const { tutor } = await createTutorUseCase.execute({
+describe('Register tutors Use Case', () => {
+  beforeEach(() => {
+    tutorsRepository = new InMemoryTutorsRepository()
+    sut = new CreateTutorUseCase(tutorsRepository)
+  })
+
+  it('should be able to register a tutor', async () => {
+    const { tutor } = await sut.execute({
       username: 'João da Silva',
       cpf: '12345678901',
       email: 'joao.silva@example.com',
@@ -34,13 +39,10 @@ describe('Register Pet Use Case', () => {
     expect(tutor.id).toEqual(expect.any(String))
   })
 
-  it('should not be able to register a pet with the same email twice', async () => {
-    const petsRepository = new InMemoryTutorsRepository()
-    const createTutorUseCase = new CreateTutorUseCase(petsRepository)
-
+  it('should not be able to register a tutor with the same email twice', async () => {
     const email = 'joao.silva@example.com'
 
-    await createTutorUseCase.execute({
+    await sut.execute({
       username: 'João da Silva',
       cpf: '12345678901',
       email,
@@ -64,7 +66,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createTutorUseCase.execute({
+      sut.execute({
         username: 'João da Silva',
         cpf: '12345678901',
         email,
@@ -89,13 +91,10 @@ describe('Register Pet Use Case', () => {
     ).rejects.toBeInstanceOf(TutorsAlreadyExistsError)
   })
 
-  it('should not be able to register a pet with the same cpf twice', async () => {
-    const petsRepository = new InMemoryTutorsRepository()
-    const createPetUseCase = new CreateTutorUseCase(petsRepository)
-
+  it('should not be able to register a tutor with the same cpf twice', async () => {
     const cpf = '12345678901'
 
-    await createPetUseCase.execute({
+    await sut.execute({
       username: 'João da Silva',
       cpf,
       email: 'joao.silva@example.com',
@@ -119,7 +118,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createPetUseCase.execute({
+      sut.execute({
         username: 'João da Silva',
         cpf,
         email: 'joao.silva@example.com',
@@ -144,13 +143,10 @@ describe('Register Pet Use Case', () => {
     ).rejects.toBeInstanceOf(TutorsAlreadyExistsError)
   })
 
-  it('should not be able to register a pet with the same cnpj twice', async () => {
-    const petsRepository = new InMemoryTutorsRepository()
-    const createPetUseCase = new CreateTutorUseCase(petsRepository)
-
+  it('should not be able to register a tutor with the same cnpj twice', async () => {
     const cnpj = ''
 
-    await createPetUseCase.execute({
+    await sut.execute({
       username: 'João da Silva',
       cpf: '12345678901',
       email: 'joao.silva@example.com',
@@ -174,7 +170,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createPetUseCase.execute({
+      sut.execute({
         username: 'João da Silva',
         cpf: '12345678901',
         email: 'joao.silva@example.com',
@@ -199,13 +195,10 @@ describe('Register Pet Use Case', () => {
     ).rejects.toBeInstanceOf(TutorsAlreadyExistsError)
   })
 
-  it('should not be able to register a pet with the same uniqueCard twice', async () => {
-    const petsRepository = new InMemoryTutorsRepository()
-    const createPetUseCase = new CreateTutorUseCase(petsRepository)
-
+  it('should not be able to register a tutor with the same uniqueCard twice', async () => {
     const uniqueCard = ''
 
-    await createPetUseCase.execute({
+    await sut.execute({
       username: 'João da Silva',
       cpf: '12345678901',
       email: 'joao.silva@example.com',
@@ -229,7 +222,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createPetUseCase.execute({
+      sut.execute({
         username: 'João da Silva',
         cpf: '12345678901',
         email: 'joao.silva@example.com',

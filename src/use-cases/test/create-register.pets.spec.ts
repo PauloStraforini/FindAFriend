@@ -1,15 +1,20 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { CreatePetUseCase } from './create-register.pets'
 import { InMemoryPetsRepository } from '../../repositories/in-memory/in-memory-pets-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { PetAlreadyExistsError } from '../errors/pet-already-exist-error'
 
-describe('Register Pet Use Case', () => {
-  it('should be able to register a pet', async () => {
-    const petsRepository = new InMemoryPetsRepository()
-    const createPetUseCase = new CreatePetUseCase(petsRepository)
+let petsRepository: InMemoryPetsRepository
+let sut: CreatePetUseCase
 
-    const { pet } = await createPetUseCase.execute({
+describe('Register Pet Use Case', () => {
+  beforeEach(() => {
+    petsRepository = new InMemoryPetsRepository()
+    sut = new CreatePetUseCase(petsRepository)
+  })
+
+  it('should be able to register a pet', async () => {
+    const { pet } = await sut.execute({
       name: 'Fido',
       rga: 'RGA123456789',
       dateOfBirth: new Date('2018-06-15'),
@@ -38,12 +43,9 @@ describe('Register Pet Use Case', () => {
   })
 
   it('should not be able to register a pet with the same RGA twice', async () => {
-    const petsRepository = new InMemoryPetsRepository()
-    const createPetUseCase = new CreatePetUseCase(petsRepository)
-
     const rga = 'RGA123456789'
 
-    await createPetUseCase.execute({
+    await sut.execute({
       name: 'Fido',
       rga,
       dateOfBirth: new Date('2018-06-15'),
@@ -67,7 +69,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createPetUseCase.execute({
+      sut.execute({
         name: 'Rex',
         rga,
         dateOfBirth: new Date('2019-03-10'),
@@ -93,12 +95,9 @@ describe('Register Pet Use Case', () => {
   })
 
   it('should not be able to register a pet with the same RGA twice', async () => {
-    const petsRepository = new InMemoryPetsRepository()
-    const createPetUseCase = new CreatePetUseCase(petsRepository)
-
     const rga = 'RGA123456789'
 
-    await createPetUseCase.execute({
+    await sut.execute({
       name: 'Fido',
       rga,
       dateOfBirth: new Date('2018-06-15'),
@@ -122,7 +121,7 @@ describe('Register Pet Use Case', () => {
     })
 
     await expect(() =>
-      createPetUseCase.execute({
+      sut.execute({
         name: 'Rex',
         rga,
         dateOfBirth: new Date('2019-03-10'),
