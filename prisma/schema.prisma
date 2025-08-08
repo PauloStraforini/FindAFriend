@@ -40,7 +40,7 @@ model Tutors {
   dateOfBirth DateTime? @map("date_of_birth")
   phoneNumber String    @map("phone_number") // Numero de telefone
   gender      Gender // Genero 
-  uniqueCard  String?   @map("unique_card") // cartão referente ao Bolsa Família
+  uniqueCard  String?   @unique @map("unique_card") // cartão referente ao Bolsa Família
   about       String?
 
   // Endereço
