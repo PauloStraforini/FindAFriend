@@ -1,13 +1,15 @@
+// src/repositories/prisma/prisma-pets-repository.ts
+
 import { Prisma, Pet } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
 
 export interface PetsRepository {
-  create(data: Prisma.PetCreateInput): Promise<Pet>
+  create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
   findByRgaOrMicrochip(rga: string, microchip?: string): Promise<Pet | null>
 }
 
 export class PrismaPetsRepository implements PetsRepository {
-  async create(data: Prisma.PetCreateInput) {
+  async create(data: Prisma.PetUncheckedCreateInput) {
     const pet = await prisma.pet.create({
       data,
     })
