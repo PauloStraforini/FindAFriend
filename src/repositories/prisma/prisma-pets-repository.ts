@@ -2,27 +2,35 @@
 
 import { Prisma, Pet } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
-
-export interface PetsRepository {
-  create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
-  findByRgaOrMicrochip(rga: string, microchip?: string): Promise<Pet | null>
-}
+import { PetsRepository } from '../pets-repository'
 
 export class PrismaPetsRepository implements PetsRepository {
+  public items: Pet[] = []
+
   async create(data: Prisma.PetUncheckedCreateInput) {
-    const pet = await prisma.pet.create({
+    const user = await prisma.pet.create({
       data,
     })
-    return pet
+    return user
   }
 
-  async findByRgaOrMicrochip(rga: string, microchip: string) {
-    const pet = await prisma.pet.findFirst({
-      where: {
-        OR: [{ rga }, { microchip }],
-      },
-    })
+  async findByMicrochip(microchip: string) {
+    const user = this.items.find((item) => item.microchip === microchip)
 
-    return pet
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByRga(rga: string) {
+    const user = this.items.find((item) => item.rga === rga)
+
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 }

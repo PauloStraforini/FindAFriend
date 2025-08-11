@@ -14,17 +14,13 @@ export async function authenticate(
     registration: z.string().min(6),
   })
 
-  const { email, password, cpf, registration } = authenticateBodySchema.parse(
-    request.body,
-  )
+  const { password, registration } = authenticateBodySchema.parse(request.body)
 
   try {
     const authenticateUseCase = makeAuthenticateUseCase()
 
     await authenticateUseCase.execute({
-      email,
       password,
-      cpf,
       registration,
     })
   } catch (err) {
