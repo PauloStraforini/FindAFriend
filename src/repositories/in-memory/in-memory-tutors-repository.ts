@@ -5,27 +5,6 @@ import { randomUUID } from 'crypto'
 export class InMemoryTutorsRepository implements TutorsRepository {
   public items: Tutors[] = []
 
-  async findByEmailCpfCnpjOruniqueCard(
-    email: string,
-    cpf: string,
-    cnpj: string,
-    uniqueCard: string,
-  ): Promise<Tutors | null> {
-    const tutor = this.items.find(
-      (item) =>
-        item.email === email ||
-        item.cpf === cpf ||
-        item.cnpj === cnpj ||
-        item.uniqueCard === uniqueCard,
-    )
-
-    if (!tutor) {
-      return null
-    }
-
-    return tutor
-  }
-
   async create(data: Prisma.TutorsUncheckedCreateInput): Promise<Tutors> {
     const tutor: Tutors = {
       id: data.id ?? randomUUID(),
@@ -54,5 +33,45 @@ export class InMemoryTutorsRepository implements TutorsRepository {
     this.items.push(tutor)
 
     return tutor
+  }
+
+  async findByEmail(email: string) {
+    const user = this.items.find((item) => item.email === email)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByCpf(cpf: string) {
+    const user = this.items.find((item) => item.cpf === cpf)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByUniqueCard(uniqueCard: string) {
+    const user = this.items.find((item) => item.uniqueCard === uniqueCard)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByCnpj(cnpj: string) {
+    const user = this.items.find((item) => item.cnpj === cnpj)
+
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 }

@@ -5,19 +5,24 @@ import { randomUUID } from 'crypto'
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
-  async findByRgaOrMicrochip(
-    rga: string,
-    microchip: string,
-  ): Promise<Pet | null> {
-    const pet = this.items.find(
-      (item) => item.rga === rga || item.microchip === microchip,
-    )
+  async findByRga(rga: string): Promise<Pet | null> {
+    const user = this.items.find((item) => item.rga === rga)
 
-    if (!pet) {
+    if (!user) {
       return null
     }
 
-    return pet
+    return user
+  }
+
+  async findByMicrochip(microchip: string): Promise<Pet | null> {
+    const user = this.items.find((item) => item.microchip === microchip)
+
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 
   async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {

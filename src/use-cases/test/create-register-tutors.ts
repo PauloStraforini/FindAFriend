@@ -35,13 +35,7 @@ export class CreateTutorUseCase {
   async execute(
     data: CreateTutorUseCaseRequest,
   ): Promise<CreateTutorUseCaseResponse> {
-    const tutorExists =
-      await this.tutorsRepository.findByEmailCpfCnpjOruniqueCard(
-        data.email,
-        data.cpf,
-        data.cnpj,
-        data.uniqueCard,
-      )
+    const tutorExists = await this.tutorsRepository.findByCpf(data.cpf)
 
     if (tutorExists) {
       throw new TutorsAlreadyExistsError()

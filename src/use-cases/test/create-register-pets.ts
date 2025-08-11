@@ -46,10 +46,7 @@ export class CreatePetUseCase {
   async execute(
     data: CreatePetUseCaseRequest,
   ): Promise<CreatePetUseCaseResponse> {
-    const existingPet = await this.petsRepository.findByRgaOrMicrochip(
-      data.rga,
-      data.microchip,
-    )
+    const existingPet = await this.petsRepository.findByRga(data.rga)
 
     if (existingPet) {
       throw new PetAlreadyExistsError()
