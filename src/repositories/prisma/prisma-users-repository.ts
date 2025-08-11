@@ -15,24 +15,40 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
+  async findByCpf(cpf: string) {
+    const user = this.items.find((item) => item.cpf === cpf)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByEmail(email: string) {
+    const user = this.items.find((item) => item.email === email)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByRegistration(registration: string) {
+    const user = this.items.find((item) => item.registration === registration)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
   async create(data: Prisma.UserCreateInput) {
     const user = await prisma.user.create({
       data,
     })
-    return user
-  }
-
-  async findByEmailCpfOrRegistration(
-    email: string,
-    cpf: string,
-    registration: string,
-  ) {
-    const user = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { cpf }, { registration }],
-      },
-    })
-
     return user
   }
 }

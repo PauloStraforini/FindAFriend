@@ -31,11 +31,8 @@ export class RegisterUseCase {
   }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     const password_hash = await hash(password, 6)
 
-    const userExists = await this.usersRepository.findByEmailCpfOrRegistration(
-      email,
-      cpf,
-      registration,
-    )
+    const userExists =
+      await this.usersRepository.findByRegistration(registration)
 
     if (userExists) {
       throw new UserAlreadyExistsError()

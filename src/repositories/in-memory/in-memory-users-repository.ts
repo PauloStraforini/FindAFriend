@@ -15,19 +15,34 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
-  async findByEmailCpfOrRegistration(
-    email: string,
-    cpf: string,
-    registration: string,
-  ): Promise<User | null> {
-    const user = this.items.find(
-      (item) =>
-        item.email === email &&
-        item.cpf === cpf &&
-        item.registration === registration,
-    )
+  async findByCpf(cpf: string) {
+    const user = this.items.find((item) => item.cpf === cpf)
 
-    return user || null
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByEmail(email: string) {
+    const user = this.items.find((item) => item.email === email)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findByRegistration(registration: string) {
+    const user = this.items.find((item) => item.registration === registration)
+
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
