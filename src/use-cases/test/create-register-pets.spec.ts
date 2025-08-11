@@ -36,6 +36,14 @@ describe('Register Pet Use Case', () => {
       characteristics: 'Muito ativo e carinhoso',
       orgId: '123',
       tutorsId: 'tutor-id-uuid-aqui',
+      castrated: false,
+      nameEmergencyContact: '',
+      phoneNumberEmergency: '',
+      cep: '',
+      street: '',
+      numberHouse: '',
+      neighborhood: '',
+      city: '',
     })
 
     expect(pet.id).toEqual(expect.any(String))
@@ -66,6 +74,14 @@ describe('Register Pet Use Case', () => {
       housing: 'Casa com quintal',
       characteristics: 'Muito ativo e carinhoso',
       orgId: '12345678',
+      castrated: false,
+      nameEmergencyContact: '',
+      phoneNumberEmergency: '',
+      cep: '',
+      street: '',
+      numberHouse: '',
+      neighborhood: '',
+      city: '',
     })
 
     await expect(() =>
@@ -90,6 +106,14 @@ describe('Register Pet Use Case', () => {
         housing: 'Casa com quintal',
         characteristics: 'Calmo e atento',
         orgId: '12345678',
+        castrated: false,
+        nameEmergencyContact: '',
+        phoneNumberEmergency: '',
+        cep: '',
+        street: '',
+        numberHouse: '',
+        neighborhood: '',
+        city: '',
       }),
     ).rejects.toBeInstanceOf(PetAlreadyExistsError)
   })
@@ -118,6 +142,14 @@ describe('Register Pet Use Case', () => {
       housing: 'Casa com quintal',
       characteristics: 'Muito ativo e carinhoso',
       orgId: '123',
+      castrated: false,
+      nameEmergencyContact: '',
+      phoneNumberEmergency: '',
+      cep: '',
+      street: '',
+      numberHouse: '',
+      neighborhood: '',
+      city: '',
     })
 
     await expect(() =>
@@ -142,6 +174,14 @@ describe('Register Pet Use Case', () => {
         housing: 'Casa com quintal',
         characteristics: 'Calmo e atento',
         orgId: '123',
+        castrated: false,
+        nameEmergencyContact: '',
+        phoneNumberEmergency: '',
+        cep: '',
+        street: '',
+        numberHouse: '',
+        neighborhood: '',
+        city: '',
       }),
     ).rejects.toBeInstanceOf(PetAlreadyExistsError)
   })
