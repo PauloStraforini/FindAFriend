@@ -124,7 +124,7 @@ model Event {
   // Informações gerais do evento
   id           String       @id @default(uuid())
   title        String
-  description  String? 
+  description  String?
   statsOfEvent StatsOfEvent @map("stats_of_event") // Status do evento
   latitude     Decimal
   longitude    Decimal
@@ -144,7 +144,7 @@ model Event {
 
   //datas
   dateOfEvent    DateTime @map("date_of_event")
-  starTime       DateTime @map("start_time")
+  startTime      DateTime @map("start_time")
   endTime        DateTime @map("end_time")
   totalVacancies Int      @map("total_vacancies") // total de vagas
   registered     String // Incritos
