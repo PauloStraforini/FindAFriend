@@ -123,19 +123,19 @@ enum TYPE {
 model Event {
   // Informações gerais do evento
   id           String       @id @default(uuid())
-  name         String
-  description  String
+  title        String
+  description  String? 
   statsOfEvent StatsOfEvent @map("stats_of_event") // Status do evento
-  latitude     Decimal?
-  longitude    Decimal?
+  latitude     Decimal
+  longitude    Decimal
   cep          String       @db.VarChar(8)
   street       String // Rua
   neighborhood String // Bairro
   numberHouse  String?      @map("number_house")
   complement   String? // Complemento (ex: 'Bloco 25')
-  authorName   String       @map("author_name")
-  email        String       @unique
-  whatsapp     String
+  authorName   String?      @map("author_name")
+  email        String?      @unique
+  phone        String?
 
   //Filters
   acceptedAnimalTypes String[] @map("accepted_animal_types") // Tipos de animais aceitos
