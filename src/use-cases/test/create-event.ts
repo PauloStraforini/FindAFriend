@@ -20,7 +20,7 @@ interface CreateEventUseCaseRequest {
   acceptedSexes: string[]
   excludedBreeds: string[]
   dateOfEvent: Date
-  starTime: Date
+  startTime: Date
   endTime: Date
   totalVacancies: number
   registered: string
@@ -54,7 +54,7 @@ export class CreateEventUseCase {
       acceptedSexes: data.acceptedSexes,
       excludedBreeds: data.excludedBreeds,
       dateOfEvent: data.dateOfEvent,
-      starTime: data.starTime,
+      startTime: data.startTime,
       endTime: data.endTime,
       totalVacancies: data.totalVacancies,
       registered: data.registered,

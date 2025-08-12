@@ -15,6 +15,12 @@ export class InMemoryEventsRepository implements EventsRepository {
     return event
   }
 
+  async searchMany(query: string, page: number) {
+    return this.items
+      .filter((item) => item.title.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async create(data: Prisma.EventCreateInput) {
     const event = {
       id: data.id ?? randomUUID(),
@@ -39,7 +45,7 @@ export class InMemoryEventsRepository implements EventsRepository {
         ? data.excludedBreeds
         : (data.excludedBreeds?.set ?? []),
       dateOfEvent: new Date(data.dateOfEvent),
-      starTime: new Date(data.starTime),
+      startTime: new Date(data.startTime),
       endTime: new Date(data.endTime),
       totalVacancies: data.totalVacancies,
       registered: '0',
