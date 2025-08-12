@@ -163,3 +163,18 @@ enum StatsOfEvent {
   FINISHED
   CANCELLED
 }
+
+model Attachment {
+  id           String       @id @default(cuid())
+  filename     String
+  url          String
+  externalId   String       @map("external_id")
+  externalType ExternalType
+  createdAt    DateTime     @default(now()) @map("created_at")
+}
+
+enum ExternalType {
+  User
+  Pet
+  Tutor
+}
