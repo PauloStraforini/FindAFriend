@@ -8,8 +8,8 @@ export async function authenticate(
   reply: FastifyReply,
 ) {
   const authenticateBodySchema = z.object({
-    password: z.string().min(6),
     registration: z.string().min(6),
+    password: z.string().min(6),
   })
 
   const { password, registration } = authenticateBodySchema.parse(request.body)
@@ -18,8 +18,8 @@ export async function authenticate(
     const authenticateUseCase = makeAuthenticateUseCase()
 
     await authenticateUseCase.execute({
-      password,
       registration,
+      password,
     })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
