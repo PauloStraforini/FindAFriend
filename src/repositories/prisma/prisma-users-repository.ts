@@ -1,10 +1,8 @@
-import { Prisma, User } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
 import { UsersRepository } from '../users-repository'
 
 export class PrismaUsersRepository implements UsersRepository {
-  public items: User[] = []
-
   async findById(id: string) {
     const user = await prisma.user.findUnique({
       where: {
@@ -16,31 +14,31 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async findByCpf(cpf: string) {
-    const user = this.items.find((item) => item.cpf === cpf)
-
-    if (!user) {
-      return null
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        cpf,
+      },
+    })
 
     return user
   }
 
   async findByEmail(email: string) {
-    const user = this.items.find((item) => item.email === email)
-
-    if (!user) {
-      return null
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
 
     return user
   }
 
   async findByRegistration(registration: string) {
-    const user = this.items.find((item) => item.registration === registration)
-
-    if (!user) {
-      return null
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        registration,
+      },
+    })
 
     return user
   }

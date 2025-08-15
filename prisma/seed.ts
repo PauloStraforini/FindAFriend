@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcrypt'
+import { hash } from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('123456', 10)
+  const hashedPassword = await hash('123456', 6)
 
   await prisma.user.create({
     data: {
@@ -20,6 +20,6 @@ async function main() {
 }
 
 main()
-  .then(() => console.log('User created!'))
-  .catch((e) => console.error(e))
+  .then(() => console.log('✅ User created!'))
+  .catch(console.error)
   .finally(() => prisma.$disconnect())
