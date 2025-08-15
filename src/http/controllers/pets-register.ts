@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { PrismaPetsRepository } from '../../repositories/prisma/prisma-pets-repository'
-import { CreatePetUseCase } from '../../use-cases/test/create-register-pets'
+import { CreatePetUseCase } from '../../use-cases/test/register-pets'
 import { PetAlreadyExistsError } from '../../use-cases/errors/pet-already-exist-error'
 import { Decimal } from '@prisma/client/runtime/library'
 
