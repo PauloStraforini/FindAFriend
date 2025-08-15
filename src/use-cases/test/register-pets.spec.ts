@@ -1,5 +1,5 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { CreatePetUseCase } from './create-register-pets'
+import { CreatePetUseCase } from './register-pets'
 import { InMemoryPetsRepository } from '../../repositories/in-memory/in-memory-pets-repository'
 import { Decimal } from '@prisma/client/runtime/library'
 import { PetAlreadyExistsError } from '../errors/pet-already-exist-error'
