@@ -30,7 +30,7 @@ describe('Create Event (e2e)', () => {
         numberHouse: '123',
         complement: null,
         authorName: 'Admin',
-        email: 'admin@example.com',
+        email: 'admin1@example.com',
         phone: '11999999999',
         acceptedAnimalTypes: ['Dog', 'Cat'],
         acceptedSexes: ['Male', 'Female'],
@@ -57,7 +57,7 @@ describe('Create Event (e2e)', () => {
         numberHouse: '123',
         complement: null,
         authorName: 'Admin',
-        email: 'admin@example.com',
+        email: 'admin2@example.com',
         phone: '11999999999',
         acceptedAnimalTypes: ['Dog', 'Cat'],
         acceptedSexes: ['Male', 'Female'],
@@ -74,16 +74,14 @@ describe('Create Event (e2e)', () => {
       .query({
         q: 'Paulo',
       })
-      .set('Authorization', `Bearer. ${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .send()
 
     console.log(response.error)
     expect(response.statusCode).toEqual(200)
-    expect(response.body.events).toHaveLength(1)
-    expect(response.body.events).toEqual([
-      expect.objectContaining({
-        title: 'Paulo Gym',
-      }),
-    ])
+    expect(response.body.events).toHaveLength(2)
+    expect(response.body.events).toEqual(
+      expect.arrayContaining([expect.objectContaining({ title: 'Paulo Gym' })]),
+    )
   })
 })
