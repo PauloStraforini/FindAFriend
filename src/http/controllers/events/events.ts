@@ -20,9 +20,9 @@ interface CreateEventBody {
   acceptedAnimalTypes: string[]
   acceptedSexes: string[]
   excludedBreeds: string[]
-  dateOfEvent: string // ISO string
-  startTime: string // ISO string
-  endTime: string // ISO string
+  dateOfEvent: Date // ISO string
+  startTime: Date // ISO string
+  endTime: Date // ISO string
   totalVacancies: number
 }
 

@@ -25,9 +25,9 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     acceptedAnimalTypes: z.array(z.string()),
     acceptedSexes: z.array(z.string()),
     excludedBreeds: z.array(z.string()),
-    dateOfEvent: z.date(),
-    startTime: z.date(),
-    endTime: z.date(),
+    dateOfEvent: z.coerce.date(),
+    startTime: z.coerce.date(),
+    endTime: z.coerce.date(),
     totalVacancies: z.int(),
     registered: z.string(),
   })
