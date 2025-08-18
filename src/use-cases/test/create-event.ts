@@ -3,7 +3,6 @@ import { Event, StatsOfEvent } from '@prisma/client'
 
 interface CreateEventUseCaseRequest {
   title: string
-  name: string
   description?: string | null
   statsOfEvent: StatsOfEvent
   latitude: number
@@ -11,9 +10,9 @@ interface CreateEventUseCaseRequest {
   cep: string
   street: string
   neighborhood: string
-  numberHouse?: string
-  complement?: string
-  authorName: string
+  numberHouse?: string | null
+  complement?: string | null
+  authorName?: string | null
   email?: string | null
   phone?: string | null
   acceptedAnimalTypes: string[]
