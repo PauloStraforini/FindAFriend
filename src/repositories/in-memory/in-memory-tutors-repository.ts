@@ -35,6 +35,16 @@ export class InMemoryTutorsRepository implements TutorsRepository {
     return tutor
   }
 
+  async findById(id: string): Promise<Tutors | null> {
+    const user = this.items.find((item) => item.id === id)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
   async findByEmail(email: string) {
     const user = this.items.find((item) => item.email === email)
 
@@ -59,6 +69,15 @@ export class InMemoryTutorsRepository implements TutorsRepository {
     }
 
     return user
+  }
+
+  async deleteById(id: string): Promise<Tutors | null> {
+    const index = this.items.findIndex((item) => item.id === id)
+    if (index === -1) {
+      return null
+    }
+    const [deletedTutors] = this.items.splice(index, 1)
+    return deletedTutors
   }
 
   async findByUniqueCard(uniqueCard: string) {

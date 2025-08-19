@@ -12,6 +12,16 @@ export class PrismaTutorsRepository implements TutorsRepository {
     return user
   }
 
+  async findById(id: string) {
+    const user = await prisma.tutors.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return user
+  }
+
   async findByCnpj(cnpj: string) {
     const user = this.items.find((item) => item.cnpj === cnpj)
 
@@ -46,6 +56,17 @@ export class PrismaTutorsRepository implements TutorsRepository {
     }
 
     return user
+  }
+
+  async deleteById(id: string): Promise<Tutors | null> {
+    try {
+      const deletedTutors = await prisma.tutors.delete({
+        where: { id },
+      })
+      return deletedTutors
+    } catch (error) {
+      return null
+    }
   }
 
   async findByUniqueCard(uniqueCard: string) {
