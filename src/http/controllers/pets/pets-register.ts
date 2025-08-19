@@ -5,10 +5,7 @@ import { CreatePetUseCase } from '../../../use-cases/test/register-pets'
 import { PetAlreadyExistsError } from '../../../use-cases/errors/pet-already-exist-error'
 import { Decimal } from '@prisma/client/runtime/library'
 
-export async function petsRegister(
-  request: FastifyRequest,
-  reply: FastifyReply,
-) {
+export async function create(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
     rga: z
       .string()
