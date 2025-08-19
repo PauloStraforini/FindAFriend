@@ -4,4 +4,5 @@ export interface PetsRepository {
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
   findByMicrochip(microchip: string): Promise<Pet | null>
   findByRga(rga: string): Promise<Pet | null>
+  searchMany(query: string, page: number): Promise<Pet[]>
 }
