@@ -45,6 +45,12 @@ export class InMemoryTutorsRepository implements TutorsRepository {
     return user
   }
 
+  async searchMany(query: string, page: number) {
+    return this.items
+      .filter((item) => item.username.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async findByCpf(cpf: string) {
     const user = this.items.find((item) => item.cpf === cpf)
 

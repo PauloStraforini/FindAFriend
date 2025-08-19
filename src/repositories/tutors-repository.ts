@@ -7,4 +7,5 @@ export interface TutorsRepository {
   findByCpf(cpf: string): Promise<Tutors | null>
   findByCnpj(cnpj: string): Promise<Tutors | null>
   findByUniqueCard(uniqueCard: string): Promise<Tutors | null>
+  searchMany(query: string, page: number): Promise<Tutors[]>
 }
