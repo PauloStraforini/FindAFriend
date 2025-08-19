@@ -2,8 +2,8 @@ import { PrismaEventsRepository } from '../../repositories/prisma/prisma-events-
 import { SearchEventsUseCase } from '../test/search-events'
 
 export function makeSearchEventsUseCase() {
-  const gymsRepository = new PrismaEventsRepository()
-  const useCase = new SearchEventsUseCase(gymsRepository)
+  const eventsRepository = new PrismaEventsRepository()
+  const useCase = new SearchEventsUseCase(eventsRepository)
 
   return useCase
 }
