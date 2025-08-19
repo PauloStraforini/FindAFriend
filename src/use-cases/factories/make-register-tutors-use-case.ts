@@ -1,5 +1,5 @@
 import { PrismaTutorsRepository } from '../../repositories/prisma/prisma-tutors-repository'
-import { CreateTutorUseCase } from '../test/register-tutors'
+import { CreateTutorUseCase } from '../test/create-tutors'
 
 export function makeRegisterTutorsUseCase() {
   const tutorsRepository = new PrismaTutorsRepository()

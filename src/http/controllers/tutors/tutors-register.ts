@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { PrismaTutorsRepository } from '../../../repositories/prisma/prisma-tutors-repository'
-import { CreateTutorUseCase } from '../../../use-cases/test/register-tutors'
+import { CreateTutorUseCase } from '../../../use-cases/test/create-tutors'
 import { TutorsAlreadyExistsError } from '../../../use-cases/errors/tutors-already-exist-error'
 
 export async function tutorRegister(
