@@ -10,4 +10,5 @@ export interface EventsRepository {
   searchMany(query: string, page: number): Promise<Event[]>
   create(data: Prisma.EventCreateInput): Promise<Event>
   findManyNearby(params: FindManyNearbyParams): Promise<Event[]>
+  deleteById(id: string): Promise<Event | null>
 }

@@ -36,6 +36,17 @@ export class PrismaEventsRepository implements EventsRepository {
     return events
   }
 
+  async deleteById(id: string): Promise<Event | null> {
+    try {
+      const deletedEvent = await prisma.event.delete({
+        where: { id },
+      })
+      return deletedEvent
+    } catch (error) {
+      return null
+    }
+  }
+
   async create(data: Prisma.EventCreateInput) {
     const event = await prisma.event.create({
       data,

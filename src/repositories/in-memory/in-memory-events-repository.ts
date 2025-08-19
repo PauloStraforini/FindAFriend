@@ -25,6 +25,15 @@ export class InMemoryEventsRepository implements EventsRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async deleteById(id: string): Promise<Event | null> {
+    const index = this.items.findIndex((item) => item.id === id)
+    if (index === -1) {
+      return null
+    }
+    const [deletedEvent] = this.items.splice(index, 1)
+    return deletedEvent
+  }
+
   async findManyNearby(params: FindManyNearbyParams) {
     return this.items.filter((item) => {
       const distance = getDistanceBetweenCoordinates(
