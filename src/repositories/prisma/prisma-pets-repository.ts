@@ -20,6 +20,27 @@ export class PrismaPetsRepository implements PetsRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async findById(id: string) {
+    const user = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return user
+  }
+
+  async deleteById(id: string): Promise<Pet | null> {
+    try {
+      const deletedPets = await prisma.pet.delete({
+        where: { id },
+      })
+      return deletedPets
+    } catch (error) {
+      return null
+    }
+  }
+
   async findByMicrochip(microchip: string) {
     const user = this.items.find((item) => item.microchip === microchip)
 

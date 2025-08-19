@@ -15,6 +15,25 @@ export class InMemoryPetsRepository implements PetsRepository {
     return user
   }
 
+  async findById(id: string): Promise<Pet | null> {
+    const user = this.items.find((item) => item.id === id)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async deleteById(id: string): Promise<Pet | null> {
+    const index = this.items.findIndex((item) => item.id === id)
+    if (index === -1) {
+      return null
+    }
+    const [deletedPets] = this.items.splice(index, 1)
+    return deletedPets
+  }
+
   async searchMany(query: string, page: number) {
     return this.items
       .filter((item) => item.name.includes(query))
