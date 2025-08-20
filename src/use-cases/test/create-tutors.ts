@@ -5,23 +5,23 @@ import { Tutors, Gender } from '@prisma/client'
 interface CreateTutorUseCaseRequest {
   username: string
   cpf: string
-  cnpj: string
-  socialName: string
-  email: string
-  dateOfBirth: Date
+  cnpj?: string
+  socialName?: string
+  email?: string
+  dateOfBirth?: Date
   phoneNumber: string
   age: string
   gender: Gender
-  uniqueCard: string
-  about: string
-  cep: string
-  street: string
-  numberHouse: string
-  complement: string
-  neighborhood: string
-  city: string
-  nameEmergencyContact: string
-  phoneNumberEmergency: string
+  uniqueCard?: string
+  about?: string
+  cep?: string
+  street?: string
+  numberHouse?: string
+  complement?: string
+  neighborhood?: string
+  city?: string
+  nameEmergencyContact?: string
+  phoneNumberEmergency?: string
   pets: string
 }
 
