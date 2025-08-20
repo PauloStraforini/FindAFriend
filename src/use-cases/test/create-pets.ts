@@ -1,31 +1,30 @@
 import { PetAlreadyExistsError } from '../errors/pet-already-exist-error'
 import { PetsRepository } from '../../repositories/pets-repository'
 import { Pet, TYPE, SEX } from '@prisma/client'
-import { Decimal } from '@prisma/client/runtime/library'
 
 interface CreatePetUseCaseRequest {
   name: string
   rga: string
-  dateOfBirth: Date
+  dateOfBirth?: Date
   age: string
   sex: SEX
   type: TYPE
   breed: string
-  weight: Decimal
-  weightClass: string
-  primaryColor: string
+  weight?: number
+  weightClass?: string
+  primaryColor?: string
   about: string
-  microchip: string
-  dateOfApplication: Date
-  veterinarian: string
-  manufacturerOfMicrochip: string
-  socialName: string
-  origin: string
-  housing: string
-  characteristics: string
+  microchip?: string
+  dateOfApplication?: Date
+  veterinarian?: string
+  manufacturerOfMicrochip?: string
+  socialName?: string
+  origin?: string
+  housing?: string
+  characteristics?: string
   orgId: string
   tutorsId?: string
-  castrated: boolean
+  castrated?: boolean
   nameEmergencyContact: string
   phoneNumberEmergency: string
   cep: string
