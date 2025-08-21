@@ -9,6 +9,25 @@ import { getDistanceBetweenCoordinates } from '../../../utils/get-distance-betwe
 export class InMemoryEventsRepository implements EventsRepository {
   public items: Event[] = []
 
+  async updateById(id: string, data: Prisma.EventUpdateInput): Promise<Event> {
+    const eventIndex = this.items.findIndex((item) => item.id === id)
+
+    if (eventIndex === -1) {
+      throw new Error('Event not found')
+    }
+
+    const updatedEvent: Event = {
+      ...this.items[eventIndex],
+      ...Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [key, value as unknown]),
+      ),
+    }
+
+    this.items[eventIndex] = updatedEvent
+
+    return updatedEvent
+  }
+
   async findById(id: string): Promise<Event | null> {
     const event = this.items.find((item) => item.id === id)
 

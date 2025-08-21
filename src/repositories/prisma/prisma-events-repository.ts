@@ -47,6 +47,13 @@ export class PrismaEventsRepository implements EventsRepository {
     }
   }
 
+  async updateById(id: string, data: Prisma.EventUpdateInput): Promise<Event> {
+    return prisma.event.update({
+      where: { id },
+      data,
+    })
+  }
+
   async create(data: Prisma.EventCreateInput) {
     const event = await prisma.event.create({
       data,
