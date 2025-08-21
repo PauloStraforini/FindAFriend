@@ -30,7 +30,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     characteristics: z.string().optional(),
 
     // Relacionamentos
-    orgId: z.string(),
+    orgId: z.string().uuid(),
     tutorsId: z.string().optional(),
   })
 

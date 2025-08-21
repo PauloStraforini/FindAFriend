@@ -1,7 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { CreatePetUseCase } from './create-pets'
 import { InMemoryPetsRepository } from '../../repositories/in-memory/in-memory-pets-repository'
-import { Decimal } from '@prisma/client/runtime/library'
 import { PetAlreadyExistsError } from '../errors/pet-already-exist-error'
 
 let petsRepository: InMemoryPetsRepository
@@ -22,7 +21,8 @@ describe('Register Pet Use Case', () => {
       sex: 'MALE',
       type: 'DOG',
       breed: 'Labrador',
-      weight: new Decimal(25.3),
+      weight: 20,
+
       weightClass: '15-30kg',
       primaryColor: 'Amarelo',
       about: 'Cachorro amigável e brincalhão',
@@ -61,7 +61,8 @@ describe('Register Pet Use Case', () => {
       sex: 'MALE',
       type: 'DOG',
       breed: 'Labrador',
-      weight: new Decimal(25.3),
+      weight: 20,
+
       weightClass: '15-30kg',
       primaryColor: 'Amarelo',
       about: 'Cachorro amigável e brincalhão',
@@ -93,7 +94,7 @@ describe('Register Pet Use Case', () => {
         sex: 'MALE',
         type: 'DOG',
         breed: 'Pastor Alemão',
-        weight: new Decimal(30),
+        weight: 20,
         weightClass: '25-35kg',
         primaryColor: 'Preto',
         about: 'Cachorro protetor',
@@ -129,7 +130,7 @@ describe('Register Pet Use Case', () => {
       sex: 'MALE',
       type: 'DOG',
       breed: 'Labrador',
-      weight: new Decimal(25.3),
+      weight: 20,
       weightClass: '15-30kg',
       primaryColor: 'Amarelo',
       about: 'Cachorro amigável e brincalhão',
@@ -161,7 +162,7 @@ describe('Register Pet Use Case', () => {
         sex: 'MALE',
         type: 'DOG',
         breed: 'Pastor Alemão',
-        weight: new Decimal(30),
+        weight: 20,
         weightClass: '25-35kg',
         primaryColor: 'Preto',
         about: 'Cachorro protetor',
