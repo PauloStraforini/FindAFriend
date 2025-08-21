@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 import { EventAlreadyExistsError } from '../../../use-cases/errors/event-already-exists-error'
-import { makeCreateGymUseCase } from '../../../use-cases/factories/make-create-event-use-case'
+import { makeCreateEventUseCase } from '../../../use-cases/factories/make-create-event-use-case'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createEventBodySchema = z.object({
@@ -57,7 +57,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   } = createEventBodySchema.parse(request.body)
 
   try {
-    const createEventUseCase = makeCreateGymUseCase()
+    const createEventUseCase = makeCreateEventUseCase()
 
     await createEventUseCase.execute({
       acceptedAnimalTypes,

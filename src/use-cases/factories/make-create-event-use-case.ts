@@ -1,7 +1,7 @@
 import { CreateEventUseCase } from '../test/create-event'
 import { PrismaEventsRepository } from '../../repositories/prisma/prisma-events-repository'
 
-export function makeCreateGymUseCase() {
+export function makeCreateEventUseCase() {
   const eventsRepository = new PrismaEventsRepository()
   const UseCase = new CreateEventUseCase(eventsRepository)
 
