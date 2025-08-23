@@ -6,23 +6,42 @@ export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   async findByRga(rga: string): Promise<Pet | null> {
-    const user = this.items.find((item) => item.rga === rga)
+    const pets = this.items.find((item) => item.rga === rga)
 
-    if (!user) {
+    if (!pets) {
       return null
     }
 
-    return user
+    return pets
+  }
+
+  async updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet> {
+    const petIndex = this.items.findIndex((item) => item.id === id)
+
+    if (petIndex === -1) {
+      throw new Error('Pet not found')
+    }
+
+    const updatedPet: Pet = {
+      ...this.items[petIndex],
+      ...Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [key, value as unknown]),
+      ),
+    }
+
+    this.items[petIndex] = updatedPet
+
+    return updatedPet
   }
 
   async findById(id: string): Promise<Pet | null> {
-    const user = this.items.find((item) => item.id === id)
+    const pets = this.items.find((item) => item.id === id)
 
-    if (!user) {
+    if (!pets) {
       return null
     }
 
-    return user
+    return pets
   }
 
   async deleteById(id: string): Promise<Pet | null> {
@@ -41,13 +60,13 @@ export class InMemoryPetsRepository implements PetsRepository {
   }
 
   async findByMicrochip(microchip: string): Promise<Pet | null> {
-    const user = this.items.find((item) => item.microchip === microchip)
+    const pets = this.items.find((item) => item.microchip === microchip)
 
-    if (!user) {
+    if (!pets) {
       return null
     }
 
-    return user
+    return pets
   }
 
   async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
@@ -75,7 +94,6 @@ export class InMemoryPetsRepository implements PetsRepository {
       origin: data.origin ?? null,
       housing: data.housing ?? null,
       characteristics: data.characteristics ?? null,
-      orgId: data.orgId,
       tutorsId: data.tutorsId ?? null,
       createdAt: new Date(),
       updatedAt: new Date(),
