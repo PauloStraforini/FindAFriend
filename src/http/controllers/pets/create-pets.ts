@@ -30,7 +30,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     characteristics: z.string().optional(),
 
     // Relacionamentos
-    orgId: z.string().uuid(),
     tutorsId: z.string().optional(),
   })
 
@@ -38,7 +37,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     about,
     breed,
     name,
-    orgId,
     rga,
     sex,
     type,
@@ -65,7 +63,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       about,
       breed,
       name,
-      orgId,
       rga,
       sex,
       type,
