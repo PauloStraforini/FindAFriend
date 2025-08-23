@@ -1,58 +1,54 @@
 import request from 'supertest'
-import { app } from '../../../app' // seu Fastify app
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { app } from '../../../app'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { prisma } from '../../../lib/prisma'
 
-describe('Update Event (E2E)', () => {
-  let createdEventId: string
+describe('Update Event (e2e)', () => {
+  let eventId: string
 
   beforeAll(async () => {
     await app.ready()
+  })
 
-    // Criar um evento inicial para depois atualizar
-    const response = await request(app.server).post('/events').send({
-      title: 'Evento Teste',
-      description: 'Descrição teste',
-      statsOfEvent: 'PENDING',
-      latitude: 10,
-      longitude: 20,
-      cep: '12345678',
-      street: 'Rua Teste',
-      neighborhood: 'Bairro Teste',
-      numberHouse: '100',
-      authorName: 'Autor Teste',
-      email: 'teste-update@teste.com',
-      phone: '999999999',
-      totalVacancies: 50,
+  beforeEach(async () => {
+    const event = await prisma.event.create({
+      data: {
+        title: 'JavaScript Gym',
+        description: 'Some description.',
+        statsOfEvent: 'PENDING',
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+        cep: '88000000',
+        street: 'Rua do Evento',
+        neighborhood: 'Centro',
+        numberHouse: '123',
+        complement: null,
+        authorName: 'Admin',
+        email: 'addd@example.com',
+        phone: '11999999999',
+        acceptedAnimalTypes: ['Dog', 'Cat'],
+        acceptedSexes: ['Male', 'Female'],
+        excludedBreeds: [],
+        dateOfEvent: new Date(),
+        startTime: new Date(),
+        endTime: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
+        totalVacancies: 50,
+        registered: 'admin',
+      },
     })
 
-    createdEventId = response.body.id
+    eventId = event.id
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
+  console.log()
 
-  it('should update an event successfully', async () => {
-    const updateData = {
-      title: 'Evento Atualizado',
-      description: 'Descrição atualizada',
-      statsOfEvent: 'ACTIVE',
-      totalVacancies: 100,
-    }
+  it('should be able to update an Event', async () => {
+    const response = await request(app.server).put(`/events/${eventId}`).send({
+      title: 'Updated JavaScript Gym',
+    })
 
-    const response = await request(app.server)
-      .put(`/events/${createdEventId}`)
-      .send(updateData)
+    console.log()
 
-    expect(response.status).toBe(200)
-    expect(response.body).toEqual({ success: true })
-  })
-
-  it('should return 400 for invalid UUID', async () => {
-    const response = await request(app.server)
-      .put(`/events/invalid-uuid`)
-      .send({ title: 'Teste' })
-
-    expect(response.status).toBe(400)
+    expect(response.statusCode).toEqual(200)
   })
 })

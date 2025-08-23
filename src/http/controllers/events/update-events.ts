@@ -1,31 +1,35 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
+import { EventNotFoundError } from '../../../use-cases/errors/event-not-found-error'
 import { makeUpdateEventUseCase } from '../../../use-cases/factories/make-update-event-use-case'
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
-  // Schema para validação dos campos do body (sem obrigar o id dentro do payload)
+  const updateEventParamsSchema = z.object({
+    id: z.string().uuid(),
+  })
+
   const updateEventBodySchema = z.object({
     title: z.string().optional(),
-    description: z.string().nullable().optional(),
+    description: z.string().optional(),
     statsOfEvent: z
       .enum(['PENDING', 'ACTIVE', 'FINISHED', 'CANCELLED'])
       .optional(),
     latitude: z
       .number()
-      .refine((value) => Math.abs(value) <= 90)
+      .refine((v) => Math.abs(v) <= 90)
       .optional(),
     longitude: z
       .number()
-      .refine((value) => Math.abs(value) <= 180)
+      .refine((v) => Math.abs(v) <= 180)
       .optional(),
     cep: z.string().min(8).optional(),
     street: z.string().optional(),
     neighborhood: z.string().optional(),
-    numberHouse: z.string().nullable().optional(),
-    complement: z.string().nullable().optional(),
+    numberHouse: z.string().optional(),
+    complement: z.string().optional(),
     authorName: z.string().optional(),
-    email: z.string().nullable().optional(),
-    phone: z.string().nullable().optional(),
+    email: z.string().optional(),
+    phone: z.string().optional(),
     acceptedAnimalTypes: z.array(z.string()).optional(),
     acceptedSexes: z.array(z.string()).optional(),
     excludedBreeds: z.array(z.string()).optional(),
@@ -36,19 +40,20 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     registered: z.string().optional(),
   })
 
-  const paramsSchema = z.object({
-    id: z.string().uuid(),
-  })
-
-  const { id } = paramsSchema.parse(request.params)
-  const data = updateEventBodySchema.parse(request.body)
+  const { id } = updateEventParamsSchema.parse(request.params)
+  const updateData = updateEventBodySchema.parse(request.body)
 
   try {
     const updateEventUseCase = makeUpdateEventUseCase()
-    await updateEventUseCase.execute(id, data)
-  } catch (err) {
-    return reply.status(400).send({ message: (err as Error).message })
-  }
+    const updatedEvent = await updateEventUseCase.execute(id, updateData)
 
-  return reply.status(200).send({ success: true })
+    return reply.status(200).send(updatedEvent)
+  } catch (err) {
+    if (err instanceof EventNotFoundError) {
+      return reply.status(404).send({ message: err.message })
+    }
+
+    console.error(err)
+    return reply.status(500).send({ message: 'Internal server error' })
+  }
 }
