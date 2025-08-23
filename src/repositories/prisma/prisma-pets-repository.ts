@@ -8,10 +8,17 @@ export class PrismaPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   async create(data: Prisma.PetUncheckedCreateInput) {
-    const user = await prisma.pet.create({
+    const pets = await prisma.pet.create({
       data,
     })
-    return user
+    return pets
+  }
+
+  async updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet> {
+    return prisma.pet.update({
+      where: { id },
+      data,
+    })
   }
 
   async searchMany(query: string, page: number) {
@@ -21,13 +28,13 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async findById(id: string) {
-    const user = await prisma.pet.findUnique({
+    const pets = await prisma.pet.findUnique({
       where: {
         id,
       },
     })
 
-    return user
+    return pets
   }
 
   async deleteById(id: string): Promise<Pet | null> {
@@ -42,22 +49,22 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async findByMicrochip(microchip: string) {
-    const user = this.items.find((item) => item.microchip === microchip)
+    const pets = this.items.find((item) => item.microchip === microchip)
 
-    if (!user) {
+    if (!pets) {
       return null
     }
 
-    return user
+    return pets
   }
 
   async findByRga(rga: string) {
-    const user = this.items.find((item) => item.rga === rga)
+    const pets = this.items.find((item) => item.rga === rga)
 
-    if (!user) {
+    if (!pets) {
       return null
     }
 
-    return user
+    return pets
   }
 }

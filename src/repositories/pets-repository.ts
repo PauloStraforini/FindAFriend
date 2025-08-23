@@ -8,4 +8,5 @@ export interface PetsRepository {
   findByRga(rga: string): Promise<Pet | null>
   searchMany(query: string, page: number): Promise<Pet[]>
   deleteById(id: string): Promise<Pet | null>
+  updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet>
 }
