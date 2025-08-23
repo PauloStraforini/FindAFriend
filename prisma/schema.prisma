@@ -97,8 +97,6 @@ model Pet {
   characteristics String? // Características do pet
 
   // Relacionamentos
-  event    Event   @relation(fields: [orgId], references: [id])
-  orgId    String  @map("org_id")
   Tutors   Tutors? @relation(fields: [tutorsId], references: [id])
   tutorsId String? @map("tutors_id")
 
@@ -149,7 +147,6 @@ model Event {
   totalVacancies Int      @map("total_vacancies") // total de vagas
   registered     String // Incritos
 
-  pets Pet[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
