@@ -22,7 +22,6 @@ interface CreatePetUseCaseRequest {
   origin?: string
   housing?: string
   characteristics?: string
-  orgId: string
   tutorsId?: string
   castrated?: boolean
   nameEmergencyContact: string
@@ -71,7 +70,6 @@ export class CreatePetUseCase {
       origin: data.origin,
       housing: data.housing,
       characteristics: data.characteristics,
-      orgId: data.orgId,
       tutorsId: data.tutorsId,
     })
 

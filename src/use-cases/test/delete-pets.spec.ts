@@ -21,7 +21,6 @@ describe('Delete Pet Use Case', () => {
       type: 'DOG',
       breed: '',
       about: '',
-      orgId: '',
     })
 
     const response = await sut.execute({ id: pet.id })
