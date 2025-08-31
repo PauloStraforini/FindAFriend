@@ -1,5 +1,5 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
-import z from 'zod'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { z } from 'zod'
 import { makeSearchPetsUseCase } from '../../../use-cases/factories/make-search-pets-use-case'
 
 export async function search(request: FastifyRequest, reply: FastifyReply) {

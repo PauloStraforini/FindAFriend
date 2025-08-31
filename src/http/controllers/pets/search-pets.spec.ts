@@ -1,15 +1,19 @@
 import request from 'supertest'
 import { app } from '../../../app'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { prisma } from '../../../lib/prisma'
 
-describe('Create Pet (e2e)', () => {
+describe('Create and Search Pets (e2e)', () => {
   let tutorId: string
 
   beforeAll(async () => {
     await app.ready()
+  })
 
-    // Criar tutor antes dos pets
+  beforeEach(async () => {
+    await prisma.pet.deleteMany()
+    await prisma.tutors.deleteMany()
+
     const tutor = await prisma.tutors.create({
       data: {
         username: 'Joao',
@@ -24,15 +28,10 @@ describe('Create Pet (e2e)', () => {
   })
 
   afterAll(async () => {
-    // Limpar dados criados
-    await prisma.pet.deleteMany()
-    await prisma.tutors.deleteMany()
-
     await app.close()
   })
 
-  it('should be able to create Pets and search them', async () => {
-    // Criar primeiro pet
+  it('should be able to create pets and search them by name', async () => {
     const createResponse1 = await request(app.server).post('/pets').send({
       name: 'Paulinho',
       rga: '222123456799',
@@ -55,18 +54,10 @@ describe('Create Pet (e2e)', () => {
       characteristics: 'Muito ativo e carinhoso',
       tutorsId: tutorId,
       castrated: false,
-      nameEmergencyContact: null,
-      phoneNumberEmergency: null,
-      cep: null,
-      street: null,
-      numberHouse: null,
-      neighborhood: null,
-      city: null,
     })
 
     expect(createResponse1.statusCode).toBe(201)
 
-    // Criar segundo pet
     const createResponse2 = await request(app.server).post('/pets').send({
       name: 'Fido',
       rga: 'RGA123456789',
@@ -89,27 +80,19 @@ describe('Create Pet (e2e)', () => {
       characteristics: 'Muito ativo e carinhoso',
       tutorsId: tutorId,
       castrated: false,
-      nameEmergencyContact: null,
-      phoneNumberEmergency: null,
-      cep: null,
-      street: null,
-      numberHouse: null,
-      neighborhood: null,
-      city: null,
     })
 
     expect(createResponse2.statusCode).toBe(201)
 
-    // Buscar pets
     const searchResponse = await request(app.server)
       .get('/pets/search')
-      .query({ q: 'Fido' })
-      .send()
+      .query({ q: 'fido' })
+      .expect(200)
 
-    expect(searchResponse.statusCode).toEqual(200)
-    expect(searchResponse.body.pets).toHaveLength(2)
-    expect(searchResponse.body.pets).toEqual(
-      expect.arrayContaining([expect.objectContaining({ name: 'Fido' })]),
+    // Deve retornar apenas 1 pet (o Fido)
+    expect(searchResponse.body.pets).toHaveLength(1)
+    expect(searchResponse.body.pets[0]).toEqual(
+      expect.objectContaining({ name: 'Fido' }),
     )
   })
 })

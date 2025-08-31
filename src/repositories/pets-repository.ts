@@ -6,7 +6,7 @@ export interface PetsRepository {
   findById(id: string): Promise<Pet | null>
   findByMicrochip(microchip: string): Promise<Pet | null>
   findByRga(rga: string): Promise<Pet | null>
+  updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet>
   searchMany(query: string, page: number): Promise<Pet[]>
   deleteById(id: string): Promise<Pet | null>
-  updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet>
 }

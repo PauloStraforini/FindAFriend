@@ -15,8 +15,8 @@ app.register(fastifyJwt, {
 
 app.register(userRoutes)
 app.register(eventsRoutes)
-app.register(tutorsRoutes)
 app.register(petsRoutes)
+app.register(tutorsRoutes)
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {

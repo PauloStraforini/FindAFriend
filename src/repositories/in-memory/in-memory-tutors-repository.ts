@@ -45,6 +45,21 @@ export class InMemoryTutorsRepository implements TutorsRepository {
     return user
   }
 
+  async updateById(id: string, data: Prisma.PetUpdateInput): Promise<Tutors> {
+    const index = this.items.findIndex((item) => item.id === id)
+
+    if (index === -1) {
+      throw new Error('Tutors not found')
+    }
+
+    this.items[index] = {
+      ...this.items[index],
+      ...data,
+    } as Tutors
+
+    return this.items[index]
+  }
+
   async findByEmail(email: string) {
     const user = this.items.find((item) => item.email === email)
 

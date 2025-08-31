@@ -12,6 +12,16 @@ export class PrismaTutorsRepository implements TutorsRepository {
     return user
   }
 
+  async updateById(
+    id: string,
+    data: Prisma.TutorsUpdateInput,
+  ): Promise<Tutors> {
+    return prisma.tutors.update({
+      where: { id },
+      data,
+    })
+  }
+
   async findById(id: string) {
     const user = await prisma.tutors.findUnique({
       where: {
@@ -33,9 +43,17 @@ export class PrismaTutorsRepository implements TutorsRepository {
   }
 
   async searchMany(query: string, page: number) {
-    return this.items
-      .filter((item) => item.username.includes(query))
-      .slice((page - 1) * 20, page * 20)
+    const gyms = await prisma.tutors.findMany({
+      where: {
+        username: {
+          contains: query,
+        },
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return gyms
   }
 
   async findByCpf(cpf: string) {

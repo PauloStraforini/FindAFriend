@@ -8,10 +8,24 @@ export class PrismaPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
   async create(data: Prisma.PetUncheckedCreateInput) {
-    const pets = await prisma.pet.create({
+    const user = await prisma.pet.create({
       data,
     })
-    return pets
+    return user
+  }
+
+  async searchMany(query: string, page: number) {
+    const gyms = await prisma.pet.findMany({
+      where: {
+        name: {
+          contains: query,
+        },
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return gyms
   }
 
   async updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet> {
@@ -21,20 +35,14 @@ export class PrismaPetsRepository implements PetsRepository {
     })
   }
 
-  async searchMany(query: string, page: number) {
-    return this.items
-      .filter((item) => item.name.includes(query))
-      .slice((page - 1) * 20, page * 20)
-  }
-
   async findById(id: string) {
-    const pets = await prisma.pet.findUnique({
+    const user = await prisma.pet.findUnique({
       where: {
         id,
       },
     })
 
-    return pets
+    return user
   }
 
   async deleteById(id: string): Promise<Pet | null> {
@@ -49,22 +57,22 @@ export class PrismaPetsRepository implements PetsRepository {
   }
 
   async findByMicrochip(microchip: string) {
-    const pets = this.items.find((item) => item.microchip === microchip)
+    const user = this.items.find((item) => item.microchip === microchip)
 
-    if (!pets) {
+    if (!user) {
       return null
     }
 
-    return pets
+    return user
   }
 
   async findByRga(rga: string) {
-    const pets = this.items.find((item) => item.rga === rga)
+    const user = this.items.find((item) => item.rga === rga)
 
-    if (!pets) {
+    if (!user) {
       return null
     }
 
-    return pets
+    return user
   }
 }

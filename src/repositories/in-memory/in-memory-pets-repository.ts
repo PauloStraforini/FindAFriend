@@ -5,43 +5,39 @@ import { randomUUID } from 'crypto'
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
 
-  async findByRga(rga: string): Promise<Pet | null> {
-    const pets = this.items.find((item) => item.rga === rga)
-
-    if (!pets) {
-      return null
-    }
-
-    return pets
-  }
-
   async updateById(id: string, data: Prisma.PetUpdateInput): Promise<Pet> {
-    const petIndex = this.items.findIndex((item) => item.id === id)
+    const index = this.items.findIndex((item) => item.id === id)
 
-    if (petIndex === -1) {
+    if (index === -1) {
       throw new Error('Pet not found')
     }
 
-    const updatedPet: Pet = {
-      ...this.items[petIndex],
-      ...Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [key, value as unknown]),
-      ),
-    }
+    this.items[index] = {
+      ...this.items[index],
+      ...data,
+    } as Pet
 
-    this.items[petIndex] = updatedPet
-
-    return updatedPet
+    return this.items[index]
   }
 
-  async findById(id: string): Promise<Pet | null> {
-    const pets = this.items.find((item) => item.id === id)
+  async findByRga(rga: string): Promise<Pet | null> {
+    const user = this.items.find((item) => item.rga === rga)
 
-    if (!pets) {
+    if (!user) {
       return null
     }
 
-    return pets
+    return user
+  }
+
+  async findById(id: string): Promise<Pet | null> {
+    const user = this.items.find((item) => item.id === id)
+
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 
   async deleteById(id: string): Promise<Pet | null> {
@@ -60,13 +56,13 @@ export class InMemoryPetsRepository implements PetsRepository {
   }
 
   async findByMicrochip(microchip: string): Promise<Pet | null> {
-    const pets = this.items.find((item) => item.microchip === microchip)
+    const user = this.items.find((item) => item.microchip === microchip)
 
-    if (!pets) {
+    if (!user) {
       return null
     }
 
-    return pets
+    return user
   }
 
   async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
